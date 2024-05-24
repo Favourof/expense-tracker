@@ -8,6 +8,6 @@ const router = express.Router()
 router.post('/addincome', validateIncome, addIncome)
 router.get('/:userId', getIncomes);
 router.get('/summary/:userId/:year/:month', getMonthlySummary);
-router.get('/monthly/:userId/:year/:month/weekly', getWeeklySummariesForMonth);
+router.get('/summary/:userId/:year/:month/weekly', getWeeklySummariesForMonth);
 
 module.exports = router

@@ -7,6 +7,7 @@ const mongoose = require("mongoose");
 const authRoute = require("./src/router/Auth");
 const incomeRoute = require("./src/router/income")
 const errorHandler = require('./src/middleWare/errorHandler');
+const expenseRoute = require('./src/router/expense')
 
 
 app.use(morgan("dev"));
@@ -18,6 +19,7 @@ let port = process.env.port;
 
 app.use('/api/v1', authRoute);
 app.use('/api/v1/income', incomeRoute)
+app.use('/api/v1/expense', expenseRoute)
 
 app.use(errorHandler);
 

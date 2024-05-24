@@ -22,7 +22,7 @@ const getWeeklySummariesForMonth = async (req, res) => {
     const { userId, year, month } = req.params;
 
     // Calculate weekly summaries for the month
-    const weeklySummaries = await calculateWeeklySummaries(userId, parseInt(year), parseInt(month));
+  const weeklySummaries = await calculateWeeklySummaries(userId, parseInt(year), parseInt(month));
 
     res.status(200).json(weeklySummaries);
   } catch (error) {
@@ -43,4 +43,4 @@ const getMonthlySummary = async (req, res) => {
   }
 };
 
-module.exports = { getMonthlySummary, getWeeklySummariesForMonth };
+module.exports = { getMonthlySummary, getWeeklySummariesForMonth  };

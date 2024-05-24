@@ -1,5 +1,6 @@
 const Income = require("../model/income");
 const MonthlySummary = require('../model/MonthlySummary');
+// const {calculateWeeklySummaries, } = require("../controller/summaryController")
 const mongoose = require('mongoose')
 
 const addIncome = async (req, res) => {
@@ -34,9 +35,10 @@ const addIncome = async (req, res) => {
 
     const year = incomeDate.getFullYear();
     const month = incomeDate.getMonth() + 1;
+  
 
     // Log year and month
-    console.log("Year:", year, "Month:", month);
+    console.log("Year:", year, "Month:", month,);
 
     const totalIncome = await Income.calculateMonthlyTotal(userId, year, month);
     
@@ -46,7 +48,9 @@ const addIncome = async (req, res) => {
       { upsert: true, new: true }
     );
 
-    res.status(201).json({ income: newIncome, summary });
+    // calculateWeeklySummaries()
+
+    res.status(201).json({ income: newIncome, summary,  });
       } catch (error) {
         res.status(500).json({ message: error.message });
       }
