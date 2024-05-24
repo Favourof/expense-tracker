@@ -6,6 +6,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const authRoute = require("./src/router/Auth");
 const incomeRoute = require("./src/router/income")
+const errorHandler = require('./src/middleWare/errorHandler');
 
 
 app.use(morgan("dev"));
@@ -16,7 +17,9 @@ const mongoApiConnet = process.env.mongoURL;
 let port = process.env.port;
 
 app.use('/api/v1', authRoute);
-app.use('/api/v1', incomeRoute)
+app.use('/api/v1/income', incomeRoute)
+
+app.use(errorHandler);
 
 // console.log(mongoApiConnet)
 
