@@ -14,19 +14,21 @@ const { sendVerificationCode, sendWelcomeEmail } = require("../mailer/mail");
 // const jwt = require("jsonwebtoken");
 
 async function handleSignUp(req, res) {
-  let { firstName, lastName, email, gender, phone, password, } = req.body;
+  let { firstName, email, gender, password, } = req.body;
   try {
 
+       const checkIfUserAlreadyExit = await User.find({email})
+       if(checkIfUserAlreadyExit == email){
+           return res.status(400).json({message:"User already exist"})
+       }
     const result = await cloudinary.uploader.upload(req.file.path, {
       folder: "SQIImage",
     });
     console.log(result, "result");
     let validatedData = UserZodSchema.parse({
       firstName,
-      lastName,
       email,
       gender,
-      phone,
       password,
       image: result.secure_url,
     });
@@ -36,7 +38,7 @@ async function handleSignUp(req, res) {
     // make my validation validation
 
       const response = await User.create(validatedData);
-    const name = firstName + " " + lastName;
+    // const name = firstName + " " + lastName;
     // await sendWelcomeEmail({ name, email });
     res.status(200).json(validatedData);
     console.log(validatedData);
@@ -52,7 +54,7 @@ const handleSendOtpVerification = async ({ res, email }) => {
   try {
     console.log(email);
     //   creating a random otp
-    let otp = `${Math.floor(1000 + Math.random() * 9000)}`;
+    let otp = `${Math.floor(10000 + Math.random() * 90000)}`;
     const salt = await bcrypt.genSalt();
     //   hashing the otp
     let otps = await bcrypt.hash(otp, salt);

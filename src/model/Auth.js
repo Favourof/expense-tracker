@@ -12,10 +12,6 @@ const UserSchema = Schema({
     type: String,
     required: true,
   },
-  lastName: {
-    type: String,
-    required: true,
-  },
   email: {
     type: String,
     required: "Email address is required",
@@ -27,10 +23,6 @@ const UserSchema = Schema({
   isEmailVeried: {
     type: Boolean,
     default: false,
-  },
-  phone: {
-    type: String,
-    required: true,
   },
   image: {
     type: String,
