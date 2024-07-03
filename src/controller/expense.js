@@ -16,12 +16,12 @@ const addExpense = async (req, res) => {
 
     if (expense) {
       // Expense document exists, update it with new categories
-      const existingCategoryNames = expense.categories.map(cat => cat.name);
+      const existingCategoryNames = expense.categories.map(cat => cat.name.toLowerCase());
 
       categories.forEach(newCategory => {
         if (!existingCategoryNames.includes(newCategory.name.toLowerCase())) {
           expense.categories.push(newCategory);
-        }
+        } 
       });
 
       expense.date = expenseDate;
@@ -34,12 +34,15 @@ const addExpense = async (req, res) => {
       });
     }
 
+    // Save the updated or new expense document
     await expense.save();
+
     res.status(201).json({ expense });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(400).json({ success: false, message: error.message });
   }
 };
+
 
 
 const addSubcategory = async (req, res) => {
@@ -62,7 +65,7 @@ const addSubcategory = async (req, res) => {
       return res.status(404).json({ message: 'Category not found' });
     }
 
-    // const existingSubCategoryNames = category.subCategories.map(sub => sub.name.toLowerCase());
+    
       category.subCategories.push(subCategory);
       await expense.save();
       return res.status(200).json({ message: 'Subcategory added', expense });

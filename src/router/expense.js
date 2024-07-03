@@ -1,5 +1,7 @@
 const express = require('express');
-const { addExpense, getDailyExpenses, getWeeklyExpenses, getMonthlyExpenses, getAllExpenses, addSubcategory } = require('../controller/expense');
+const { addExpense, getDailyExpenses, getWeeklyExpenses, getMonthlyExpenses, getAllExpenses,
+     addSubcategory 
+    } = require('../controller/expense');
 const router = express.Router();
 
 router.post('/add', addExpense);
