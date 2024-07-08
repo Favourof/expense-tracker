@@ -20,8 +20,10 @@ let port = process.env.port;
 app.use('/api/v1', authRoute);
 app.use('/api/v1/income', incomeRoute)
 app.use('/api/v1/expense', expenseRoute)
+app.get('/', (req, res)=> (res.send('welcome to expense tracker')))
 
 app.use(errorHandler);
+
 
 // console.log(mongoApiConnet)
 
