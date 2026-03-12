@@ -18,6 +18,10 @@ const monthlySummarySchema = new mongoose.Schema({
     type: Number,
     default: 0
   },
+  totalExpense: {
+    type: Number,
+    default: 0
+  },
   weeklySummaries: [
     {
       week: {
@@ -25,6 +29,10 @@ const monthlySummarySchema = new mongoose.Schema({
         required: true
       },
       totalIncome: {
+        type: Number,
+        default: 0
+      },
+      totalExpense: {
         type: Number,
         default: 0
       }

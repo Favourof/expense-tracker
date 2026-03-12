@@ -32,6 +32,10 @@ const UserSchema = Schema({
     type: String,
     required: true,
   },
+  tokenVersion: {
+    type: Number,
+    default: 0,
+  },
   gender: {
     type: String,
     required: true,
@@ -42,6 +46,14 @@ const UserSchema = Schema({
       message: (props) =>
         `${props.value} is not a valid gender. Gender must be either 'male' or 'female'.`,
     },
+  },
+});
+
+UserSchema.set("toJSON", {
+  transform: function (doc, ret) {
+    delete ret.password;
+    delete ret.__v;
+    return ret;
   },
 });
 
