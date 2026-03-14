@@ -247,6 +247,7 @@ const addExpense = async (req, res) => {
                 subcategoryId: subCategoryDoc._id,
                 source: "manual",
                 note: subCategory.description || "",
+                label: subCategory.label || "",
                 idempotencyKey: idempotencyKey || undefined,
                 isDeleted: false,
               },
@@ -473,11 +474,12 @@ const updateExpense = async (req, res) => {
   try {
     const userId = req.user;
     const { id } = req.params;
-    const { amount, note, date, categoryId, subcategoryId } = req.body;
+    const { amount, note, label, date, categoryId, subcategoryId } = req.body;
 
     const update = {};
     if (amount !== undefined) update.amount = amount;
     if (note !== undefined) update.note = note;
+    if (label !== undefined) update.label = label;
     if (date) update.timestamp = new Date(date);
     if (categoryId) update.categoryId = categoryId;
     if (subcategoryId) update.subcategoryId = subcategoryId;

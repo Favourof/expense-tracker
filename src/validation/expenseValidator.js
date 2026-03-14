@@ -29,6 +29,10 @@ const validateAddExpense = [
     .optional()
     .isString()
     .withMessage("Description must be a string"),
+  check("categories.*.subCategories.*.label")
+    .optional()
+    .isString()
+    .withMessage("Label must be a string"),
   check("idempotencyKey")
     .optional()
     .isString()
@@ -49,6 +53,7 @@ const validateAddSubcategory = [
 const validateUpdateExpense = [
   check("amount").optional().isFloat({ gt: 0 }).withMessage("Amount must be greater than 0"),
   check("note").optional().isString().withMessage("Note must be a string"),
+  check("label").optional().isString().withMessage("Label must be a string"),
   check("date").optional().isISO8601().withMessage("Date must be ISO8601"),
   check("categoryId").optional().isMongoId().withMessage("Invalid category ID"),
   check("subcategoryId").optional().isMongoId().withMessage("Invalid subcategory ID"),

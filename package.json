@@ -9,6 +9,7 @@
     "auth:smoke": "node scripts/auth-smoke.js",
     "seed:income": "node scripts/seed-income.js",
     "seed:categories:ng": "node scripts/seed-categories-ng.js",
+    "seed:user": "node scripts/seed-user-aligned.js",
     "start": "node index.js",
     "dev": "nodemon index.js"
   },

@@ -32,6 +32,7 @@ const transactionSchema = new mongoose.Schema(
     },
     source: { type: String, enum: ["manual", "bank"], default: "manual" },
     merchant: { type: String },
+    label: { type: String },
     note: { type: String },
     tags: [{ type: String }],
     externalId: { type: String },

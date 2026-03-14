@@ -29,22 +29,24 @@ const createRefreshToken = (id, tokenVersion) => {
 
 // Cookie helpers keep refresh tokens HttpOnly
 const setRefreshCookie = (res, token) => {
+  const cookieDomain = env.isProd && env.COOKIE_DOMAIN ? env.COOKIE_DOMAIN : undefined;
   res.cookie("refreshToken", token, {
     httpOnly: true,
     secure: env.COOKIE_SECURE,
     sameSite: env.COOKIE_SAMESITE,
     maxAge: 7 * 24 * 60 * 60 * 1000,
-    domain: env.COOKIE_DOMAIN || undefined,
+    domain: cookieDomain,
     path: "/",
   });
 };
 
 const clearRefreshCookie = (res) => {
+  const cookieDomain = env.isProd && env.COOKIE_DOMAIN ? env.COOKIE_DOMAIN : undefined;
   res.clearCookie("refreshToken", {
     httpOnly: true,
     secure: env.COOKIE_SECURE,
     sameSite: env.COOKIE_SAMESITE,
-    domain: env.COOKIE_DOMAIN || undefined,
+    domain: cookieDomain,
     path: "/",
   });
 };

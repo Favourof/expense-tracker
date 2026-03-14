@@ -52,12 +52,14 @@ const missingInProd = requiredInProd.filter((key) => !env[key]);
 
 if (env.isProd && missingInProd.length > 0) {
   throw new Error(
-    `Missing required env vars in production: ${missingInProd.join(", ")}`
+    `Missing required env vars in production: ${missingInProd.join(", ")}`,
   );
 }
 
 if (env.isProd && !env.CLIENT_ORIGIN) {
-  console.warn("CLIENT_ORIGIN is empty in production; CORS may block requests.");
+  console.warn(
+    "CLIENT_ORIGIN is empty in production; CORS may block requests.",
+  );
 }
 
 module.exports = env;
