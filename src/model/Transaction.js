@@ -52,6 +52,12 @@ transactionSchema.index({ userId: 1, timestamp: -1 });
 transactionSchema.index({ userId: 1, type: 1, timestamp: -1 });
 transactionSchema.index({ userId: 1, categoryId: 1 });
 transactionSchema.index({ externalId: 1 }, { unique: true, sparse: true });
-transactionSchema.index({ userId: 1, idempotencyKey: 1 }, { unique: true, sparse: true });
+transactionSchema.index(
+  { userId: 1, idempotencyKey: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { idempotencyKey: { $type: "string" } },
+  },
+);
 
 module.exports = mongoose.model("Transaction", transactionSchema);
