@@ -28,25 +28,34 @@ const createRefreshToken = (id, tokenVersion) => {
 };
 
 // Cookie helpers keep refresh tokens HttpOnly
+const normalizeCookieDomain = (value) => {
+  if (!value || typeof value !== "string") return undefined;
+  const trimmed = value.trim();
+  if (!trimmed) return undefined;
+  if (trimmed.includes("://")) return undefined;
+  if (trimmed.includes("/") || trimmed.includes(":")) return undefined;
+  return trimmed;
+};
+
 const setRefreshCookie = (res, token) => {
-  const cookieDomain = env.isProd && env.COOKIE_DOMAIN ? env.COOKIE_DOMAIN : undefined;
+  const cookieDomain = env.isProd ? normalizeCookieDomain(env.COOKIE_DOMAIN) : undefined;
   res.cookie("refreshToken", token, {
     httpOnly: true,
     secure: env.COOKIE_SECURE,
     sameSite: env.COOKIE_SAMESITE,
     maxAge: 7 * 24 * 60 * 60 * 1000,
-    domain: cookieDomain,
+    ...(cookieDomain ? { domain: cookieDomain } : {}),
     path: "/",
   });
 };
 
 const clearRefreshCookie = (res) => {
-  const cookieDomain = env.isProd && env.COOKIE_DOMAIN ? env.COOKIE_DOMAIN : undefined;
+  const cookieDomain = env.isProd ? normalizeCookieDomain(env.COOKIE_DOMAIN) : undefined;
   res.clearCookie("refreshToken", {
     httpOnly: true,
     secure: env.COOKIE_SECURE,
     sameSite: env.COOKIE_SAMESITE,
-    domain: cookieDomain,
+    ...(cookieDomain ? { domain: cookieDomain } : {}),
     path: "/",
   });
 };
