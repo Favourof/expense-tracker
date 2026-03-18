@@ -1,0 +1,578 @@
+{
+  "info": {
+    "_postman_id": "d5e87ddb-e86a-4fae-a800-ffb310a4a207",
+    "name": "Expense Tracker",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "33609178"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:4002" },
+    { "key": "accessToken", "value": "" },
+    { "key": "incomeId", "value": "" },
+    { "key": "expenseId", "value": "" },
+    { "key": "categoryId", "value": "" },
+    { "key": "subCategoryId", "value": "" }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{accessToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "description": "Authentication flows",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "image", "type": "file", "src": "" },
+                { "key": "firstName", "value": "favour", "type": "text" },
+                {
+                  "key": "email",
+                  "value": "favourtobiloba200@gmail.com",
+                  "type": "text"
+                },
+                { "key": "gender", "value": "male", "type": "text" },
+                { "key": "password", "value": "12345678", "type": "text" }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/signupuser",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "signupuser"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Verify OTP",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"favourtobiloba200@gmail.com\",\n  \"otps\": \"12345\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/verifyotp",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "verifyotp"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Save accessToken', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "  const json = pm.response.json();",
+                  "  pm.expect(json).to.have.property('accessToken');",
+                  "  pm.environment.set('accessToken', json.accessToken);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"favourtobiloba200@gmail.com\",\n  \"password\": \"12345678\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/loginuser",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "loginuser"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Check Auth",
+          "request": {
+            "auth": { "type": "bearer" },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/checkauth",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "checkauth"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Refresh",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/refresh",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "refresh"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "auth": { "type": "bearer" },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "logout"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Income",
+      "item": [
+        {
+          "name": "Add Income",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Save incomeId', function () {",
+                  "  pm.response.to.have.status(201);",
+                  "  const json = pm.response.json();",
+                  "  if (json && json.income && json.income._id) {",
+                  "    pm.environment.set('incomeId', json.income._id);",
+                  "  }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer" },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 15000,\n  \"source\": \"Salary\",\n  \"date\": \"2026-03-12T12:00:00.000Z\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/income/addincome",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "income", "addincome"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List Income",
+          "request": {
+            "auth": { "type": "bearer" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/income?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "income"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Income",
+          "request": {
+            "auth": { "type": "bearer" },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 17000,\n  \"note\": \"Adjusted\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/income/{{incomeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "income", "{{incomeId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Income",
+          "request": {
+            "auth": { "type": "bearer" },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/income/{{incomeId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "income", "{{incomeId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Monthly Summary",
+          "request": {
+            "auth": { "type": "bearer" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/income/summary/2026/3",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "income", "summary", "2026", "3"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Weekly Summary (Income)",
+          "request": {
+            "auth": { "type": "bearer" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/income/summary/2026/3/weekly",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "income", "summary", "2026", "3", "weekly"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Income Insights",
+          "request": {
+            "auth": { "type": "bearer" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/income/summary/2026/3/insights",
+              "host": ["{{baseUrl}}"],
+              "path": [
+                "api",
+                "v1",
+                "income",
+                "summary",
+                "2026",
+                "3",
+                "insights"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Expense",
+      "item": [
+        {
+          "name": "Add Expense",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Save expenseId', function () {",
+                  "  pm.response.to.have.status(201);",
+                  "  const json = pm.response.json();",
+                  "  const first = json && Array.isArray(json.expenses) ? json.expenses[0] : null;",
+                  "  if (first && first._id) {",
+                  "    pm.environment.set('expenseId', first._id);",
+                  "  }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer" },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"idempotencyKey\": \"exp-20260312-001\",\n  \"categories\": [\n    {\n      \"name\": \"Food\",\n      \"subCategories\": [\n        { \"name\": \"Lunch\", \"amount\": 2500, \"date\": \"2026-03-12T12:30:00.000Z\", \"label\": \"Office\" }\n      ]\n    }\n  ]\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/expense/add",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "expense", "add"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "List Expenses",
+          "request": {
+            "auth": { "type": "bearer" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/expense/all?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "expense", "all"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Expense",
+          "request": {
+            "auth": { "type": "bearer" },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 3000,\n  \"note\": \"Adjusted\",\n  \"label\": \"Personal\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/expense/{{expenseId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "expense", "{{expenseId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Expense",
+          "request": {
+            "auth": { "type": "bearer" },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/expense/{{expenseId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "expense", "{{expenseId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Daily Total",
+          "request": {
+            "auth": { "type": "bearer" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/expense/daily/2026/3/12",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "expense", "daily", "2026", "3", "12"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Weekly Total",
+          "request": {
+            "auth": { "type": "bearer" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/expense/weekly/2026/3/2",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "expense", "weekly", "2026", "3", "2"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Monthly Total",
+          "request": {
+            "auth": { "type": "bearer" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/expense/monthly/2026/3",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "expense", "monthly", "2026", "3"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "List Categories",
+          "request": {
+            "auth": { "type": "bearer" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/categories?type=expense",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "categories"],
+              "query": [{ "key": "type", "value": "expense" }]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Category",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Save categoryId', function () {",
+                  "  pm.response.to.have.status(201);",
+                  "  const json = pm.response.json();",
+                  "  if (json && json.category && json.category._id) {",
+                  "    pm.environment.set('categoryId', json.category._id);",
+                  "  }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer" },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Subscription\",\n  \"type\": \"expense\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "categories"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Subcategory",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Save subCategoryId', function () {",
+                  "  pm.expect([200, 201]).to.include(pm.response.code);",
+                  "  const json = pm.response.json();",
+                  "  if (json && json.category && json.category._id) {",
+                  "    pm.environment.set('categoryId', json.category._id);",
+                  "  }",
+                  "  if (json && json.subcategory && json.subcategory._id) {",
+                  "    pm.environment.set('subCategoryId', json.subcategory._id);",
+                  "  }",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "auth": { "type": "bearer" },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"MTN\",\n  \"type\": \"expense\",\n  \"parentId\": \"{{categoryId}}\"\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "categories"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Category",
+          "request": {
+            "auth": { "type": "bearer" },
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Subscription & Airtime\",\n  \"isDefault\": true\n}",
+              "options": { "raw": { "language": "json" } }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/categories/{{categoryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "categories", "{{categoryId}}"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Category",
+          "request": {
+            "auth": { "type": "bearer" },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/categories/{{categoryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "categories", "{{categoryId}}"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Summary",
+      "item": [
+        {
+          "name": "Weekly Combined",
+          "request": {
+            "auth": { "type": "bearer" },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/summary/2026/3/weekly",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "v1", "summary", "2026", "3", "weekly"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

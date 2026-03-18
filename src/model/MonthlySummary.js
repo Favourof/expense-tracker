@@ -1,36 +1,43 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const monthlySummarySchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+    ref: "User",
+    required: true,
   },
   year: {
     type: Number,
-    required: true
+    required: true,
   },
   month: {
     type: Number,
-    required: true
+    required: true,
   },
   totalIncome: {
     type: Number,
-    default: 0
+    default: 0,
+  },
+  totalExpense: {
+    type: Number,
+    default: 0,
   },
   weeklySummaries: [
     {
       week: {
         type: Number,
-        required: true
+        required: true,
       },
       totalIncome: {
         type: Number,
-        default: 0
-      }
-    }
-  ]
+        default: 0,
+      },
+      totalExpense: {
+        type: Number,
+        default: 0,
+      },
+    },
+  ],
 });
 
-module.exports = mongoose.model('MonthlySummary', monthlySummarySchema);
-
+module.exports = mongoose.model("MonthlySummary", monthlySummarySchema);
